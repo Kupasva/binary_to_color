@@ -1,40 +1,33 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QLineEdit, QWidget
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea, QLabel
 
-class MainWindow(QMainWindow):
+class GridWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Opacity Setting Example")
-        
-        # Create a layout and widget
-        layout = QVBoxLayout()
-        widget = QWidget()
-        widget.setLayout(layout)
-        self.setCentralWidget(widget)
-        
-        # Create a label and line edit for opacity input
-        opacity_label = QLabel("Opacity (0.0 - 1.0):")
-        layout.addWidget(opacity_label)
-        
-        self.opacity_line_edit = QLineEdit()
-        layout.addWidget(self.opacity_line_edit)
-        
-        # Connect a slot to handle opacity input changes
-        self.opacity_line_edit.textChanged.connect(self.update_opacity)
-        
-        # Show the main window
-        self.show()
-    
-    def update_opacity(self, text):
-        try:
-            opacity = float(text)
-            self.setWindowOpacity(opacity)
-        except ValueError:
-            # Handle invalid input, e.g., non-numeric values
-            pass
 
-# Create the application
-app = QApplication([])
-window = MainWindow()
+        # Create a scroll area widget
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)
 
-# Run the application
-app.exec_()
+        # Create a widget to contain the grid layout
+        widget = QWidget(scroll_area)
+        scroll_area.setWidget(widget)
+
+        # Create a grid layout
+        grid_layout = QGridLayout(widget)
+
+        # Add labels to the grid layout
+        for i in range(10):
+            for j in range(10):
+                label = QLabel(f'Label {i}-{j}')
+                grid_layout.addWidget(label, i, j)
+
+        # Set the scroll area as the main layout of the window
+        self.setLayout(QGridLayout())
+        self.layout().addWidget(scroll_area)
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = GridWindow()
+    window.show()
+    sys.exit(app.exec_())
