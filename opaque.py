@@ -1,33 +1,48 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea, QLabel
+from tkinter import *
 
-class GridWindow(QWidget):
-    def __init__(self):
-        super().__init__()
+def color_box():
+    # Retrieve the RGB values from the Entry widgets
+    red = int(red_entry.get())
+    green = int(green_entry.get())
+    blue = int(blue_entry.get())
+    
+    # Check if the values are within the valid range (0-255)
+    if 0 <= red <= 255 and 0 <= green <= 255 and 0 <= blue <= 255:
+        # Convert the RGB values to a hexadecimal color code
+        color_code = '#{:02x}{:02x}{:02x}'.format(red, green, blue)
+        
+        # Configure the background color of the box label
+        box_label.config(bg=color_code)
+    else:
+        # Display an error message if the RGB values are invalid
+        box_label.config(text="Invalid RGB values", bg="white")
 
-        # Create a scroll area widget
-        scroll_area = QScrollArea(self)
-        scroll_area.setWidgetResizable(True)
+# Create the main window
+window = Tk()
 
-        # Create a widget to contain the grid layout
-        widget = QWidget(scroll_area)
-        scroll_area.setWidget(widget)
+# Create Entry widgets for each RGB value
+red_label = Label(window, text="Red:")
+red_label.pack()
+red_entry = Entry(window)
+red_entry.pack()
 
-        # Create a grid layout
-        grid_layout = QGridLayout(widget)
+green_label = Label(window, text="Green:")
+green_label.pack()
+green_entry = Entry(window)
+green_entry.pack()
 
-        # Add labels to the grid layout
-        for i in range(10):
-            for j in range(10):
-                label = QLabel(f'Label {i}-{j}')
-                grid_layout.addWidget(label, i, j)
+blue_label = Label(window, text="Blue:")
+blue_label.pack()
+blue_entry = Entry(window)
+blue_entry.pack()
 
-        # Set the scroll area as the main layout of the window
-        self.setLayout(QGridLayout())
-        self.layout().addWidget(scroll_area)
+# Create the button to trigger the color change
+color_button = Button(window, text="Color Box", command=color_box)
+color_button.pack()
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = GridWindow()
-    window.show()
-    sys.exit(app.exec_())
+# Create the label representing the colored box
+box_label = Label(window, width=20, height=10, bg="white")
+box_label.pack()
+
+# Start the main event loop
+window.mainloop()

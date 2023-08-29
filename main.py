@@ -1,44 +1,56 @@
 import tkinter as tk
 
-def create_box_color():
-    # Get input values from the user
-    r = int(entry_r.get())
-    g = int(entry_g.get())
-    b = int(entry_b.get())
+def change_color():
+    # Get the values from the entry boxes
+    red = int(red_entry.get())
+    green = int(green_entry.get())
+    blue = int(blue_entry.get())
 
-    # Create a hexadecimal color code using the input values
-    color_code = '#%02x%02x%02x' % (r, g, b)
+    # Validate the input values (between 0-255)
+    if red < 0 or red > 255 or \
+        green < 0 or green > 255 or \
+        blue < 0 or blue > 255:
+        status_label.config(text="Please enter values between 0-255")
+        return
 
-    # Create a box with the specified color
-    color_box.config(bg=color_code)
+    # Format the RGB values for the color
+    color = "#%02x%02x%02x" % (red, green, blue)
 
-# Create a tkinter window
+    # Set the color label background
+    color_label.config(bg=color)
+    status_label.config(text="Color changed successfully")
+
+# Create the main window
 window = tk.Tk()
-window.title("Box Color")
+window.title("Color Changer")
 
-# Create labels and entry fields for the user to input RGB values
-label_r = tk.Label(window, text="Red (0-255):")
-label_r.pack()
-entry_r = tk.Entry(window)
-entry_r.pack()
+# Create the entry boxes
+red_label = tk.Label(window, text="Red (0-255):")
+red_label.pack()
+red_entry = tk.Entry(window)
+red_entry.pack()
 
-label_g = tk.Label(window, text="Green (0-255):")
-label_g.pack()
-entry_g = tk.Entry(window)
-entry_g.pack()
+green_label = tk.Label(window, text="Green (0-255):")
+green_label.pack()
+green_entry = tk.Entry(window)
+green_entry.pack()
 
-label_b = tk.Label(window, text="Blue (0-255):")
-label_b.pack()
-entry_b = tk.Entry(window)
-entry_b.pack()
+blue_label = tk.Label(window, text="Blue (0-255):")
+blue_label.pack()
+blue_entry = tk.Entry(window)
+blue_entry.pack()
 
-# Create a button to generate the colored box
-button = tk.Button(window, text="Create Box", command=create_box_color)
-button.pack()
+# Create the button to change the color
+change_button = tk.Button(window, text="Change Color", command=change_color)
+change_button.pack()
 
-# Create a box to display the color
-color_box = tk.Label(window, width=20, height=10, relief="solid")
-color_box.pack()
+# Create the status label
+status_label = tk.Label(window)
+status_label.pack()
 
-# Run the tkinter window
+# Create the label to display the color
+color_label = tk.Label(window, width=30, height=10)
+color_label.pack()
+
+# Run the main loop
 window.mainloop()
