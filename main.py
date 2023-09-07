@@ -1,56 +1,25 @@
-import tkinter as tk
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
 
-def change_color():
-    # Get the values from the entry boxes
-    red = int(red_entry.get())
-    green = int(green_entry.get())
-    blue = int(blue_entry.get())
+class MainWindow(QMainWindow):
 
-    # Validate the input values (between 0-255)
-    if red < 0 or red > 255 or \
-        green < 0 or green > 255 or \
-        blue < 0 or blue > 255:
-        status_label.config(text="Please enter values between 0-255")
-        return
+    def __init__(self):
+        super().__init__()
 
-    # Format the RGB values for the color
-    color = "#%02x%02x%02x" % (red, green, blue)
+        self.setWindowTitle("My App")
 
-    # Set the color label background
-    color_label.config(bg=color)
-    status_label.config(text="Color changed successfully")
+        button = QPushButton("Press me!")
+        button.setChecked(True)
+        button.clicked.connect(self.the_button_was_clicked)
 
-# Create the main window
-window = tk.Tk()
-window.title("Color Changer")
+        # set the central widget of the window
+        self.setCentralWidget(button)
+    def the_button_was_clicked(self):
+        print("Clicked")
 
-# Create the entry boxes
-red_label = tk.Label(window, text="Red (0-255):")
-red_label.pack()
-red_entry = tk.Entry(window)
-red_entry.pack()
+app = QApplication(sys.argv)
 
-green_label = tk.Label(window, text="Green (0-255):")
-green_label.pack()
-green_entry = tk.Entry(window)
-green_entry.pack()
+window = MainWindow()
+window.show()
 
-blue_label = tk.Label(window, text="Blue (0-255):")
-blue_label.pack()
-blue_entry = tk.Entry(window)
-blue_entry.pack()
-
-# Create the button to change the color
-change_button = tk.Button(window, text="Change Color", command=change_color)
-change_button.pack()
-
-# Create the status label
-status_label = tk.Label(window)
-status_label.pack()
-
-# Create the label to display the color
-color_label = tk.Label(window, width=30, height=10)
-color_label.pack()
-
-# Run the main loop
-window.mainloop()
+app.exec()
